@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* Existing styles */
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: black;
+            padding-left: 20px;
+            display: flex;
+            /* justify-content: flex-end; */
+
+
+        }
+
+        .taskbar {
+            width: 70px;
+            height: 75%;
+            background-color: rgba(32, 32, 32, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0;
+            justify-content: center;
+            position: relative;
+            margin: auto 0;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        .setting {
+    position: fixed;
+    bottom: 10px; /* Distance from the bottom of the screen */
+    left: 30px; /* Distance from the left side of the screen */
+    z-index: 1000; /* Ensures it stays on top */
+}
+
+
+
+        .taskbar-item {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            position: relative;
+            margin: 19px 0;
+        }
+
+        .taskbar-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translate(5px, 10px);          }
+
+        .icon {
+            width: 100%;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        /* Submenu styles */
+        .submenu {
+            display: none; /* Hide submenu by default */
+            position: absolute;
+            top: 0;
+            left: 50px; /* Position to the right of the taskbar */
+            background-color: rgba(32, 32, 32, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            width: 200px;
+        }
+
+        .submenu-item {
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 1s ease;
+            border-radius: 4px;
+        }
+
+        .submenu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Show submenu on hover */
+        .taskbar-item:hover .submenu {
+            display: block;
+            transition: opacity s ease; /* Delay hiding */
+
+
+
+        }
+        /* Search input styles */
+        /* Search input styles */
+        .search-bar {
+          font-size: 20px;
+            display: none; /* Hide search bar by default */
+            position: absolute;
+            top: 10%; /* Center vertically in the page */
+            left: 11%; /* Center horizontally in the page */
+            transform: translate(-50%, -50%); /* Center the input */
+            background-color: rgba(32, 32, 32, 0.85);
+            backdrop-filter: blur(10px);            
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            width: 500px; /* Set width for the input */
+            color: #d0d0d0;
+        }
+
+
+
+/* card-css */
+
+
+.card-body {
+
+    display: flex;
+      align-items: center ;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 0;
+            height: 45vh;
+            padding-left: 90px;
+            display: flex;
+
+}
+
+
+
+
+
+    .card {
+      position: absolute;
+      width: 400px;
+      background: white;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 16px;
+      cursor: move;
+      user-select: none;
+      transition: box-shadow 0.3s;
+      backdrop-filter: blur(3px);
+      color: white;
+      animation: fadeIn 0.5s ease-out;
+text-align: center;
+    }
+
+
+
+    .greeting {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+
+    .time {
+      font-size: 3.5rem;
+      font-weight: 200;
+      margin: 0.5rem 0;
+    }
+
+    .date {
+      font-size: 1.2rem;
+      font-weight: 300;
+      opacity: 0.9;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 0;
+    }
+    
+    .card-content {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #666;
+    }
+    
+    .button {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    
+    .edit-btn {
+      background: #e0e0e0;
+      margin-right: 8px;
+    }
+    
+    .edit-btn:hover {
+      background: #d0d0d0;
+    }
+    
+    .done-btn {
+      background: #4CAF50;
+      color: white;
+      display: none;
+    }
+    
+    .done-btn:hover {
+      background: #45a049;
+    }
+    
+    .editable {
+      border: 2px dashed #4CAF50;
+    }
+    
+    [contenteditable="true"] {
+      outline: none;
+      padding: 4px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+
+
+
+
+
+
+  <div class="taskbar">
+
+
+
+
+    <!-- Windows Icon -->
+    <a href="https://chatgpt.com/" target="_blank" class="taskbar-item active">
+        <img src="    https://cdn-icons-png.flaticon.com/512/1828/1828673.png  " alt="Windows Icon" class="icon">
+        
+    </a>
+
+    <div class="taskbar-item" id="taskbar-item">
+      <img src="   https://cdn-icons-png.flaticon.com/512/1051/1051248.png " alt="Chrome Icon" class="icon">
+    </div>
+    
+    <!-- GPT -->
+    <a href="https://chatgpt.com/" target="_blank" class="taskbar-item">
+        <img src="   https://cdn-icons-png.flaticon.com/512/12222/12222588.png " alt="Excel Icon" class="icon">
+    </a>
+    
+    <!-- Gmail -->
+    <a href="https://mail.google.com/mail/u/0/" target="_blank" class="taskbar-item">
+        <img src="   https://cdn-icons-png.flaticon.com/512/10829/10829119.png " alt="Word Icon" class="icon">
+    </a>
+
+    <!-- Divider -->
+    <div class="divider"></div>
+    
+
+    <!-- Triangle Icon -->
+    <a href="https://www.aixploria.com/en/ultimate-list-ai/" target="_blank" class="taskbar-item">
+        <img src="    https://cdn-icons-png.flaticon.com/512/6584/6584942.png " alt="Triangle Icon" class="icon">
+    </a>
+    
+    <!-- Rectangle Icon -->
+    <a href="https://example.com/rectangle-app" target="_blank" class="taskbar-item">
+        <img src="   https://cdn-icons-png.flaticon.com/512/15427/15427945.png " alt="Rectangle Icon" class="icon">
+    </a>
+    
+    <!-- Monitor Icon -->
+    <a href="https://example.com/monitor-app" target="_blank" class="taskbar-item">
+        <img src="   https://cdn-icons-png.flaticon.com/512/14079/14079340.png " alt="Monitor Icon" class="icon">
+    </a>
+    
+    <!-- Square Icon -->
+    <a href="https://example.com/square-app" target="_blank" class="taskbar-item">
+        <img src="      https://cdn-icons-png.flaticon.com/512/5460/5460486.png " alt="Square Icon" class="icon">
+    </a>
+
+
+    <!-- Chrome Icon with submenu -->
+    <div class="taskbar-item">
+      <img src="https://cdn-icons-png.flaticon.com/512/4013/4013275.png" alt="Chrome Icon" class="icon">
+      <!-- Submenu that appears on hover -->
+      <div class="submenu">
+        <a href="https://www.google.com" target="_blank" class="submenu-item">Google</a>
+        <a href="https://www.gmail.com" target="_blank" class="submenu-item">Gmail</a>
+        <a href="https://www.google.com/maps" target="_blank" class="submenu-item">Maps</a>
+
+
+      </div>
+    </div>
+
+  
+    
+
+<!-- Chrome Icon with submenu -->
+<div class="taskbar-item">
+    <img src="https://cdn-icons-png.flaticon.com/512/10024/10024002.png" alt="Chrome Icon" class="icon">
+
+    <!-- Submenu that appears on hover -->
+    <div class="submenu">
+        <div class="submenu-item">
+            Cards - Drag:
+            <button class="button edit-btn" id="editBtn">Edit</button>
+            <button class="button done-btn" id="doneBtn">Done</button>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+
+
+ <input type="text" class="search-bar"  placeholder=" Search YouTube..." id="search-input">
+
+
+
+
+<div class="card-body" >
+    <div class="card" id="draggableCard">
+        <div class="greeting" id="cardTitle" >Good morning</div>
+    <div class="time" id="cardTitle">00:00</div>
+    <div class="date" id="cardTitle" >Monday, January 1</div>
+  <div class="card-content" id="cardContent">
+  </div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+const card = document.getElementById('draggableCard');
+const editBtn = document.getElementById('editBtn');
+const doneBtn = document.getElementById('doneBtn');
+const cardTitle = document.getElementById('cardTitle');
+const cardContent = document.getElementById('cardContent');
+const statusIndicator = document.getElementById('statusIndicator');
+
+let isDragging = false;
+let isEditing = false;
+let currentX;
+let currentY;
+let initialX;
+let initialY;
+let xOffset = 0;
+let yOffset = 0;
+
+// Load saved position from localStorage
+function loadSavedPosition() {
+    const savedPosition = JSON.parse(localStorage.getItem('cardPosition'));
+    if (savedPosition) {
+        card.style.left = savedPosition.x + 'px';
+        card.style.top = savedPosition.y + 'px';
+        xOffset = savedPosition.x;
+        yOffset = savedPosition.y;
+        currentX = savedPosition.x;
+        currentY = savedPosition.y;
+    } else {
+        // Set default initial position if no saved position exists
+        card.style.top = '50px';
+        card.style.left = '50px';
+    }
+}
+
+// Save position to localStorage
+function savePosition() {
+    const position = {
+        x: xOffset,
+        y: yOffset
+    };
+    localStorage.setItem('cardPosition', JSON.stringify(position));
+}
+
+// Load saved position on page load
+loadSavedPosition();
+
+// Drag functionality
+card.addEventListener('mousedown', dragStart);
+document.addEventListener('mousemove', drag);
+document.addEventListener('mouseup', dragEnd);
+
+function dragStart(e) {
+    if (!isEditing || e.target.classList.contains('button')) return;
+    
+    initialX = e.clientX - xOffset;
+    initialY = e.clientY - yOffset;
+    
+    if (e.target === card || e.target.parentNode === card) {
+        isDragging = true;
+    }
+}
+
+function drag(e) {
+    if (isDragging && isEditing) {
+        e.preventDefault();
+        
+        currentX = e.clientX - initialX;
+        currentY = e.clientY - initialY;
+        
+        xOffset = currentX;
+        yOffset = currentY;
+        
+        setTranslate(currentX, currentY, card);
+    }
+}
+
+function setTranslate(xPos, yPos, el) {
+    el.style.left = xPos + 'px';
+    el.style.top = yPos + 'px';
+}
+
+function dragEnd() {
+    if (isDragging) {
+        initialX = currentX;
+        initialY = currentY;
+        isDragging = false;
+        
+        // Save position when dragging ends
+        savePosition();
+    }
+}
+
+// Edit functionality
+editBtn.addEventListener('click', () => {
+    isEditing = true;
+    card.classList.add('editable');
+    cardTitle.contentEditable = true;
+    cardContent.contentEditable = true;
+    editBtn.style.display = 'none';
+    doneBtn.style.display = 'inline-block';
+    statusIndicator.textContent = 'Card is unlocked - you can move it';
+    statusIndicator.style.color = '#4CAF50';
+});
+
+doneBtn.addEventListener('click', () => {
+    isEditing = false;
+    card.classList.remove('editable');
+    cardTitle.contentEditable = false;
+    cardContent.contentEditable = false;
+    editBtn.style.display = 'inline-block';
+    doneBtn.style.display = 'none';
+    statusIndicator.textContent = 'Card is locked';
+    statusIndicator.style.color = '#666';
+    
+    // Save position when editing is done
+    savePosition();
+});
+
+
+
+
+
+
+
+
+
+
+
+
+    // Array of image URLs
+    const images = [
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-cat-sunrise-hd-wallpaper-uhdpaper.com-163%401%40n.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-dragon-tattoo-hd-wallpaper-uhdpaper.com-628%400%40j.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-nun-with-tattoo-hd-wallpaper-uhdpaper.com-740%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-school-student-uniform-hd-wallpaper-uhdpaper.com-256%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-silhouette-sparkler-city-sunset-scenery-hd-wallpaper-uhdpaper.com-757%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-sky-sunset-hd-wallpaper-uhdpaper.com-320%401%40m.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-smoking-sunset-hd-wallpaper-uhdpaper.com-253%400%40k.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-student-school-uniform-city-sunset-hd-wallpaper-uhdpaper.com-751%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-sunset-hd-wallpaper-uhdpaper.com-756%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-sword-tattoo-hd-wallpaper-uhdpaper.com-199%400%40k.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girl-vampire-nun-smoking-hd-wallpaper-uhdpaper.com-608%400%40j.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-girls-wallpaper-b96048cd011a1d5b862758cf70b1e63d.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/anime-your-name-hd-wallpaper-494d141feaad92ccb62f93b49e6320af.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/artwork-digital-art-neon-astronaut-wallpaper-442c6428ed0952b9146344b91941825d.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/artwork-fate-stay-night-sword-fantasy-girl-wallpaper-6be65cedd3610fb905341b29bdcc4ca0.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/artwork-landscape-mountains-forest-wallpaper-68654a8247389c8696ef6b66280031c9.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/beach-palm-tree-sunset-coast-scenery-digital-art-hd-wallpaper-uhdpaper.com-272%400%40j.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/beautiful-anime-girl-tattoo-kimono-hd-wallpaper-uhdpaper.com-200%400%40k.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/blood-moon-mountains-scenery-hd-wallpaper-uhdpaper.com-225%400%40k.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/car-monolith-retrowave-digital-art-hd-wallpaper-uhdpaper.com-829%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/car-purple-retrowave-landscape-wallpaper-2980284df1aabdebf60788cfd041866d.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/car-red-ferrari-testarossa-sports-car-wallpaper-88566d38d050ec78f0cca14e8862a43a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/cowboy-horse-night-digital-art-hd-wallpaper-uhdpaper.com-203%403%40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-art-magician-mountains-sunset-artwork-hd-wallpaper-1bc62cdd13517f5925143bb96d0cacd0.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-art-women-samurai-warrior-wallpaper-7884c1d6ce87ba521e457f53e628f8a3.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-artwork-car-vehicle-hd-wallpaper-99c4a1032d8b6574d07d5a323c2ccac0.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-artwork-city-lights-hd-wallpaper-7886ed48d0c0fc88f0ec11aec8b2a4da.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-artwork-drawing-digital-painting-hd-wallpaper-eb56aced23c1bfa965c40b395dac3cc0.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-artwork-illustration-drawing-hd-wallpaper-98166df8f0901cc8c09ce13e08c2c4ca.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-artwork-illustration-drawing-hd-wallpaper-db56ac6dc3810fa985344b09ad2cfcf0.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-artwork-purple-city-hd-wallpaper-2fe9c31d3d4d23ad63b94e50dae537ff.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-city-dusk-lights-hd-wallpaper-4b062cad53a1cf7935b40b293d5c2c50.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/digital-digital-art-illustration-artwork-drawing-hd-wallpaper-c8765d6850d0ec5890bc815e18a2f40a.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/fantasy-anime-girl-hd-wallpaper-uhdpaper.com-243%400%40k.jpg',
+'https://raw.githubusercontent.com/senpaiisworking/chrome_wallpapers_nighttab/main/firewatch-video-games-forest-nature-wallpaper-48464db800400c0840dcd1de880244ba.jpg',
+
+
+
+    
+    ];
+
+    // Function to get a random image URL
+    function getRandomImage() {
+        const randomIndex = Math.floor(Math.random() * images.length);
+        return images[randomIndex];
+    }
+
+    // Set the background image
+    document.body.style.backgroundImage = `url('${getRandomImage()}')`;
+
+
+// youtube search
+
+    const taskbarItem = document.getElementById('taskbar-item');
+    const searchBar = document.getElementById('search-input');
+
+    // Show the search bar when the taskbar item is clicked
+    taskbarItem.addEventListener('click', function() {
+        searchBar.style.display = searchBar.style.display === 'none' || searchBar.style.display === '' ? 'block' : 'none';
+        searchBar.focus(); // Focus on the input field
+    });
+
+    // Handle the Enter key for searching
+    searchBar.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            const query = searchBar.value.trim(); // Get the search input value
+            if (query) {
+                // Redirect to YouTube search results in a new tab
+                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
+                searchBar.value = ''; // Clear the search input after search
+                searchBar.style.display = 'none'; // Hide search bar after search
+            }
+        }
+    });
+
+
+
+
+// date time 
+function updateDateTime() {
+      const now = new Date();
+      const timeElement = document.querySelector('.time');
+      const dateElement = document.querySelector('.date');
+      const greetingElement = document.querySelector('.greeting');
+
+      // Update time
+      timeElement.textContent = now.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      // Update date
+      dateElement.textContent = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Update greeting based on time of day
+      const hour = now.getHours();
+      let greeting;
+      if (hour < 12) greeting = 'Good Morning Sensei';
+      else if (hour < 18) greeting = 'Good Evening Sensei';
+      else greeting = 'Good Night Sensei';
+      
+      greetingElement.textContent = greeting;
+    }
+
+    // Update immediately and then every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+
+
+
+
+
+
+
+// card-drag
+
+
+</script>
+
+</body>
+</html>

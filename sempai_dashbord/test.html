@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Laptop Temperature Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .temp {
+            font-size: 2em;
+            color: #ff5722;
+        }
+    </style>
+</head>
+<body>
+    <h1>Current Laptop Temperature</h1>
+    <div class="temp" id="temp-display">Loading...</div>
+
+    <script>
+        function updateTemperature() {
+            fetch('/temperature/', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'  // Identifies the request as AJAX
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('temp-display').textContent = data.temperature + '°C';
+            })
+            .catch(error => console.error('Error fetching temperature:', error));
+        }
+
+        setInterval(updateTemperature, 5000);  // Update every 5 seconds
+        updateTemperature();  // Initial call to display temperature on load
+    </script>
+</body>
+</html>
